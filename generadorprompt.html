@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generador de Prompt ROCEF</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; padding: 24px; background: #f6f7fb; color: #111; }
+    h1 { font-size: 20px; margin: 0 0 16px; }
+    .wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 16px; }
+    .card { background: #fff; border: 1px solid #e6e8ef; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(12, 1fr); }
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    label { display: block; font-size: 12px; color: #444; margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%; box-sizing: border-box; padding: 10px 12px;
+      border: 1px solid #d7dbe6; border-radius: 10px; outline: none;
+      background: #fff; font-size: 14px;
+    }
+    textarea { min-height: 86px; resize: vertical; }
+    input:focus, textarea:focus, select:focus { border-color: #6b7cff; box-shadow: 0 0 0 3px rgba(107,124,255,.15); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button {
+      border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: #2f5cff; color: #fff; }
+    .btn-ghost { background: #eef1ff; color: #2030a0; }
+    .btn-danger { background: #ffecec; color: #a31818; }
+    .hint { font-size: 12px; color: #666; margin-top: 6px; }
+    .out {
+      white-space: pre-wrap; background: #0b1020; color: #e9ecff;
+      border-radius: 12px; padding: 14px; border: 1px solid #1b2350;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .small { font-size: 12px; color: #666; }
+    @media (max-width: 840px) { .col-6, .col-4 { grid-column: span 12; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Generador de Prompt ROCEF (Rol · Objetivo · Contexto · Ejemplo · Formato)</h1>
+
+    <div class="card">
+      <div class="grid">
+        <div class="col-12">
+          <label for="rol">R — Rol (quién tiene que “ser” la IA)</label>
+          <textarea id="rol">Actuá como especialista en planificación docente del Nivel Primario, con conocimiento del Diseño Curricular vigente de la Provincia de Santa Fe, enfoque por competencias, diversificación curricular y Diseño Universal para el Aprendizaje (DUA).</textarea>
+          <div class="hint">Tip: si querés, agregá “con tono claro y práctico” o “con enfoque institucional”.</div>
+        </div>
+
+        <div class="col-12">
+          <label for="objetivo">O — Objetivo (qué necesito que produzca)</label>
+          <textarea id="objetivo">Tu objetivo es elaborar una planificación/secuencia didáctica contextualizada que favorezca aprendizajes significativos y responda a los propósitos del área y del ciclo.</textarea>
+        </div>
+
+        <div class="col-4">
+          <label for="grado">C — Grado / Año</label>
+          <input id="grado" placeholder="Ej.: 4º grado" />
+        </div>
+        <div class="col-4">
+          <label for="area">C — Área / Espacio curricular</label>
+          <input id="area" placeholder="Ej.: Matemática / Lengua" />
+        </div>
+        <div class="col-4">
+          <label for="clases">C — Cantidad de clases</label>
+          <input id="clases" placeholder="Ej.: 2 clases" />
+        </div>
+
+        <div class="col-12">
+          <label for="contenido">C — Contenido o tema</label>
+          <input id="contenido" placeholder="Ej.: fracciones (mitades y cuartos)" />
+        </div>
+
+        <div class="col-6">
+          <label for="prioritarios">C — Aprendizajes prioritarios a integrar</label>
+          <textarea id="prioritarios" placeholder="Ej.: resolución de problemas + lectura de consignas, etc."></textarea>
+        </div>
+        <div class="col-6">
+          <label for="grupo">C — Características del grupo / contexto</label>
+          <textarea id="grupo" placeholder="Ej.: heterogeneidad en lectura; 2 estudiantes con apoyos; poco acceso a tecnología; etc."></textarea>
+        </div>
+
+        <div class="col-12">
+          <label for="competencia">C — Competencia institucional a trabajar</label>
+          <input id="competencia" placeholder="Ej.: comunicacional / socioemocional / ciudadana / digital / IA" />
+        </div>
+
+        <div class="col-12">
+          <label for="ejemplo">E — Ejemplo de lo que espero (criterios de calidad)</label>
+          <textarea id="ejemplo">Como referencia, espero que la planificación incluya: actividades variadas y concretas; propuestas diferenciadas (al menos tres niveles o variantes); una adaptación accesible según DUA; consignas claras y realizables; ejemplos concretos; criterios de evaluación e indicadores vinculados a lo enseñado.</textarea>
+        </div>
+
+        <div class="col-12">
+          <label for="formato">F — Formato solicitado (estructura de salida)</label>
+          <textarea id="formato">Organizá la respuesta con el siguiente formato:
+1) Propósito general
+2) Propósitos específicos
+3) Contenidos
+4) Actividades (por clase) + actividades diversificadas
+5) Adaptación accesible (DUA)
+6) Competencia institucional
+7) Evaluación (criterios + indicadores de logro)
+8) Recursos
+9) Tiempo estimado</textarea>
+        </div>
+
+        <div class="col-12">
+          <label for="extras">Opcional — Ajustes extra</label>
+          <textarea id="extras" placeholder='Ej.: "Respetá el formato institucional de mi escuela", "Incluí instrumentos de evaluación", "Evitá actividades que requieran internet", etc.'></textarea>
+          <div class="small">Esto se agrega al final del prompt para “afinar” la respuesta.</div>
+        </div>
+
+        <div class="col-12 row">
+          <button class="btn-primary" id="btnGenerar" type="button">Generar prompt</button>
+          <button class="btn-ghost" id="btnCopiar" type="button">Copiar prompt</button>
+          <button class="btn-danger" id="btnLimpiar" type="button">Limpiar</button>
+          <span class="small" id="msg"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content: space-between;">
+        <strong>Prompt final (listo para copiar y pegar)</strong>
+        <span class="small">Se actualiza al tocar “Generar prompt”.</span>
+      </div>
+      <div id="salida" class="out" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function limpiar(s) { return (s || "").trim(); }
+
+    function generarPrompt() {
+      const rol = limpiar($("rol").value);
+      const objetivo = limpiar($("objetivo").value);
+
+      const grado = limpiar($("grado").value);
+      const area = limpiar($("area").value);
+      const clases = limpiar($("clases").value);
+      const contenido = limpiar($("contenido").value);
+
+      const prioritarios = limpiar($("prioritarios").value);
+      const grupo = limpiar($("grupo").value);
+      const competencia = limpiar($("competencia").value);
+
+      const ejemplo = limpiar($("ejemplo").value);
+      const formato = limpiar($("formato").value);
+      const extras = limpiar($("extras").value);
+
+      // Armado con ROCEF, manteniendo lenguaje natural
+      const partes = [];
+
+      if (rol) partes.push(`ROL:\n${rol}`);
+      if (objetivo) partes.push(`OBJETIVO:\n${objetivo}`);
+
+      const contextoLineas = [];
+      if (grado) contextoLineas.push(`- Grado/Año: ${grado}`);
+      if (area) contextoLineas.push(`- Área/Espacio: ${area}`);
+      if (contenido) contextoLineas.push(`- Contenido/Tema: ${contenido}`);
+      if (clases) contextoLineas.push(`- Cantidad de clases: ${clases}`);
+      if (prioritarios) contextoLineas.push(`- Aprendizajes prioritarios: ${prioritarios}`);
+      if (competencia) contextoLineas.push(`- Competencia institucional: ${competencia}`);
+      if (grupo) contextoLineas.push(`- Contexto del grupo: ${grupo}`);
+
+      if (contextoLineas.length) {
+        partes.push(`CONTEXTO:\n${contextoLineas.join("\n")}`);
+      } else {
+        partes.push(`CONTEXTO:\n(Completá al menos grado, área, tema y cantidad de clases para mejores resultados.)`);
+      }
+
+      if (ejemplo) partes.push(`EJEMPLO (lo que espero):\n${ejemplo}`);
+      if (formato) partes.push(`FORMATO DE ENTREGA:\n${formato}`);
+      if (extras) partes.push(`AJUSTES EXTRA:\n${extras}`);
+
+      // Instrucción final para fomentar calidad
+      partes.push(`IMPORTANTE:\n- Si falta información para contextualizar, hacé 3 preguntas breves antes de proponer la secuencia.\n- Evitá generalidades: proponé actividades concretas, realizables y con evidencias de aprendizaje.`);
+
+      return partes.join("\n\n");
+    }
+
+    function setMsg(text, ok=true) {
+      const el = $("msg");
+      el.textContent = text;
+      el.style.color = ok ? "#1a7f37" : "#a31818";
+      if (text) setTimeout(() => (el.textContent = ""), 2200);
+    }
+
+    function render() {
+      $("salida").textContent = generarPrompt();
+    }
+
+    $("btnGenerar").addEventListener("click", () => {
+      render();
+      setMsg("Prompt generado ✅");
+    });
+
+    $("btnCopiar").addEventListener("click", async () => {
+      const text = $("salida").textContent || generarPrompt();
+      try {
+        await navigator.clipboard.writeText(text);
+        setMsg("Copiado al portapapeles 📋");
+      } catch (e) {
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        setMsg("Copiado (modo compatibilidad) 📋");
+      }
+    });
+
+    $("btnLimpiar").addEventListener("click", () => {
+      ["grado","area","clases","contenido","prioritarios","grupo","competencia","extras"].forEach(id => $(id).value = "");
+      render();
+      setMsg("Campos limpiados 🧼");
+    });
+
+    // Render inicial
+    render();
+  </script>
+</body>
+</html>
